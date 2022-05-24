@@ -1,0 +1,56 @@
+#Preparing the Lab On Demand Environment to test this playbook:
+# 1. run the quick_setup script on the jumphost desktop
+# 
+# 2. Perform the following on cluster1:
+#     set test
+#     system node image dev-promoted-update -node cluster1-01
+#     system node image dev-promoted-update -node cluster1-02
+#     system services web file-uploads config modify -node * -size 3GB
+# 3. Perform the following on cluster2:
+#     set test
+#     system node image dev-promoted-update -node cluster2-01
+#     system services web file-uploads config modify -node * -size 3GB 
+#
+#     (monitor job status and wait for successful completion)
+#
+# 4. install hfs on jumphost 
+#     http://rejetto.com/hfs/?f=dl
+#
+# 5. download ONTAP images and add them to hfs
+# 
+
+---
+- hosts: ontap
+  gather_facts: false
+  vars:
+    netapp_hostname: "{{inventory_hostname}}"
+    netapp_username: "admin"
+    netapp_password: "Netapp1!"
+    package_version: "9.7"
+    package_url: "http://192.168.0.5/{{package_version|replace('.','')}}_q_image.tgz"
+  tasks:
+  - name: Revert all lifs
+    netapp.ontap.na_ontap_command:
+      hostname: "{{ netapp_hostname }}"
+      username: "{{ netapp_username }}"
+      password: "{{ netapp_password }}"
+      https: true
+      validate_certs: false
+      command: ['network', 'interface', 'revert', '-lif', '*']
+    delegate_to: localhost
+    ignore_errors: true
+
+  - name: ONTAP software update
+    netapp.ontap.na_ontap_software_update:
+      state: present
+      package_url: "{{package_url}}"
+      package_version: "{{package_version}}"
+      ignore_validation_warning: True
+      download_only: False
+      hostname: "{{ netapp_hostname }}"
+      username: "{{ netapp_username }}"
+      password: "{{ netapp_password }}"
+      https: true
+      validate_certs: false
+      timeout: 7200
+    delegate_to: localhost
