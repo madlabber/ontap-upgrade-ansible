@@ -1,0 +1,3 @@
+[ontap]
+192.168.0.101 clustername=cluster1
+192.168.0.102 clustername=cluster2
