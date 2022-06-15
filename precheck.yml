@@ -29,28 +29,18 @@
     package_version: "9.7"
     package_url: "http://192.168.0.5/{{package_version|replace('.','')}}_q_image.tgz"
   tasks:
-  - name: Revert all lifs
-    netapp.ontap.na_ontap_command:
-      hostname: "{{ netapp_hostname }}"
-      username: "{{ netapp_username }}"
-      password: "{{ netapp_password }}"
-      https: true
-      validate_certs: false
-      command: ['network', 'interface', 'revert', '-lif', '*']
-    delegate_to: localhost
-    ignore_errors: true
 
   - name: ONTAP software update
     netapp.ontap.na_ontap_software_update:
       state: present
       package_url: "{{package_url}}"
       package_version: "{{package_version}}"
-      ignore_validation_warning: True
+      ignore_validation_warning: False
       download_only: False
       hostname: "{{ netapp_hostname }}"
       username: "{{ netapp_username }}"
       password: "{{ netapp_password }}"
       https: true
       validate_certs: false
-      timeout: 7200
+      timeout: 300
     delegate_to: localhost
