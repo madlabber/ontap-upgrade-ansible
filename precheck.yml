@@ -50,3 +50,9 @@
   - name: show prechecks
     debug:
       msg: "{{ prechecks }}"
+
+  - name: log prechecks
+    ansible.builtin.copy:
+      content: "{{ prechecks }}"
+      dest: precheck.log
+    delegate_to: localhost
