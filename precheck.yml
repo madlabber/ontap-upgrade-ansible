@@ -49,7 +49,7 @@
 
   - name: show prechecks
     debug:
-      msg: "{{ prechecks.msg.splt('[')[1] }}"
+      msg: "{{ prechecks.msg.split('[')[1] }}"
 
   - name: log prechecks
     ansible.builtin.lineinfile:
