@@ -49,11 +49,11 @@
 
   - name: show prechecks
     debug:
-      msg: "{{ prechecks.msg }}"
+      msg: "{{ prechecks.msg.splt('[')[1] }}"
 
   - name: log prechecks
     ansible.builtin.lineinfile:
-      line: "{{ netapp_hostname }} validation warnings: {{ prechecks.msg }}"
+      line: "{{ netapp_hostname }}: [{{ prechecks.msg.split('[')[1] }}"
       path: precheck.log
       create: True
     delegate_to: localhost
