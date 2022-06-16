@@ -53,7 +53,7 @@
 
   - name: log prechecks
     ansible.builtin.lineinfile:
-      search_string: "{{ netapp_hostname }}"
+      regex: "^{{ netapp_hostname }}"
       line: "{{ netapp_hostname }}: [{{ prechecks.msg.split('[')[1] }}"
       path: precheck.log
       create: True
