@@ -53,7 +53,7 @@
 
   - name: log prechecks
     ansible.builtin.lineinfile:
-      line: "{{ prechecks.msg }}"
+      line: "{{ netapp_hostname }} validation warnings: {{ prechecks.msg }}"
       path: precheck.log
       create: True
     delegate_to: localhost
