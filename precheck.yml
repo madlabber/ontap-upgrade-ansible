@@ -44,3 +44,9 @@
       validate_certs: false
       timeout: 300
     delegate_to: localhost
+    ignore_errors: True
+    register: prechecks
+
+  - name: show prechecks
+    debug:
+      msg: "{{ prechecks }}"
