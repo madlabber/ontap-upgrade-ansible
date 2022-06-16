@@ -49,11 +49,11 @@
 
   - name: show prechecks
     debug:
-      msg: "{{ prechecks }}"
+      msg: "{{ prechecks.msg }}"
 
   - name: log prechecks
     ansible.builtin.lineinfile:
-      line: "{{ prechecks }}"
+      line: "{{ prechecks.msg }}"
       path: precheck.log
       create: True
     delegate_to: localhost
